@@ -1,0 +1,75 @@
+# Decorator to add dynamic report formatting
+def report_style(func):
+    def wrapper(*args, **kwargs):
+        print("=" * 50)
+        print("        DYNAMIC REPORT GENERATOR")
+        print("=" * 50)
+        func(*args, **kwargs)
+        print("=" * 50)
+    return wrapper
+
+
+class Report:
+    company = "MIT ADT"
+    template = "Student Report"
+
+    # Constructor (Magic Method)
+    def __init__(self, name, roll, marks):
+        self.name = name
+        self.roll = roll
+        self.marks = marks
+
+    # Class Method to change organization name
+    @classmethod
+    def change_company(cls, new_company):
+        cls.company = new_company
+
+    # Class Method to change report template
+    @classmethod
+    def change_template(cls, new_template):
+        cls.template = new_template
+
+    # Magic Method
+    def __str__(self):
+        return (f"Name      : {self.name}\n"
+                f"Roll No   : {self.roll}\n"
+                f"Marks     : {self.marks}")
+
+    # Decorator applied
+    @report_style
+    def generate_report(self):
+        print(f"Template : {Report.template}")
+        print(f"Institute: {Report.company}")
+        print("-" * 50)
+        print(self)
+
+        if self.marks >= 75:
+            grade = "A"
+        elif self.marks >= 60:
+            grade = "B"
+        elif self.marks >= 40:
+            grade = "C"
+        else:
+            grade = "F"
+
+        print(f"Grade    : {grade}")
+
+        if self.marks >= 40:
+            print("Result   : PASS")
+        else:
+            print("Result   : FAIL")
+
+
+# ---------------- Main Program ----------------
+
+student1 = Report("Rahul", 101, 85)
+student1.generate_report()
+
+print()
+
+# Customize report dynamically
+Report.change_company("MIT ADT")
+Report.change_template("Semester End Examination Report")
+
+student2 = Report("Priya", 102, 35)
+student2.generate_report()
